@@ -1,0 +1,166 @@
+                  Limpeza e Tratamento
+                      de Dados
+Dominio dos Dados:
+     Aparência: sol, nublado, chuva
+     Temperatura: -130 ~ 130 F
+     Umidade: 0 ~ 100
+     Joga: sim/nao
+
+Importação dos Dados
+
+```{r}
+#Importação dos dados, strings vazias como NA, strings como factores
+
+dados = read.csv("tempo.csv", sep = ";", na.strings = "", stringsAsFactors = T)
+head(dados)
+```
+Explorar Dados, Colunas Categoricas
+
+```{r}
+#Coluna Aparencia
+
+counts = table(dados$Aparencia)
+counts
+barplot(counts, main = "Aparencia", xlab = "Aparencia")
+
+#Coluna Vento
+
+counts = table(dados$Vento)
+counts
+barplot(counts, main = "Vento", xlab = "Vento")
+
+#Coluna Jogar
+
+counts = table(dados$Jogar)
+counts
+barplot(counts, main = "Jogar", xlab = "Jogar")
+```
+
+Explorar Dados, colunas categoricas
+
+```{r}
+#Coluna Temperatura
+
+summary(dados$Temperatura)
+boxplot(dados$Temperatura)
+boxplot(dados$Temperatura, outline = F)
+hist(dados$Temperatura)
+
+#Coluna Umidade
+
+summary(dados$Umidade)
+boxplot(dados$Umidade)
+boxplot(dados$Umidade, outline = F)
+hist(dados$Umidade)
+```
+
+Tratamento de Valores Faltantes, NA´S
+
+Coluna Umidade
+
+```{r}
+dados[!complete.cases(dados),]
+
+#Coluna Umidade
+
+summary(dados$Umidade)
+dados[is.na(dados$Umidade),]
+median(dados$Umidade, na.rm = T)
+
+#Trocando os NA´s pela mediana
+
+dados[is.na(dados$Umidade),]$Umidade = median(dados$Umidade, na.rm = T)
+dados
+
+#Verificando se tem valores faltantes na coluna Umidade
+
+dados[is.na(dados$Umidade),]
+
+```
+Coluna Vento
+
+```{r}
+dados[!complete.cases(dados),]
+
+#Coluna Vento
+
+dados[is.na(dados$Vento),]
+
+summary(dados$Vento)
+
+#Valor NA vai receber FALSO(moda)
+
+dados[is.na(dados$Vento),]$Vento = "FALSO"
+
+#Verificando se ainda tem NA
+
+dados[is.na(dados$Vento),]
+
+```
+Dados fora do dominio
+
+Coluna Aparência
+
+```{r}
+#Coluna Aparência
+
+summary(dados$Aparencia)
+
+# transformar menos em sol (moda)
+dados[dados$Aparencia == "menos",]$Aparencia = "sol"
+
+#remover levels não utilizados
+
+dados$Aparencia = factor(dados$Aparencia)
+
+#verificando os levels
+
+summary(dados$Aparencia)
+
+
+```
+Removendo outliers 
+
+Coluna Temperatura
+
+```{r}
+#Coluna Temperatura
+
+#A temperatura tem que está entre -130 a 130F
+
+dados[dados$Temperatura < -130 | dados$Temperatura > 130,]$Temperatura
+
+# O outlier tem que receber a mediana
+
+median(dados$Temperatura)
+
+dados[dados$Temperatura < -130 | dados$Temperatura > 130,]$Temperatura = median(dados$Temperatura)
+
+#Verificando se ainda existe outlier
+
+boxplot(dados$Temperatura)
+hist(dados$Temperatura)
+
+```
+
+Coluna Umidade
+
+```{r}
+#A coluna Umidade tem que estar entre 0 e 100
+
+dados[dados$Umidade < 0 | dados$Umidade > 100,]$Umidade
+
+# O valor 200 ira receber a mediana
+
+median(dados$Umidade)
+
+dados[dados$Umidade < 0 | dados$Umidade > 100,]$Umidade = median(dados$Umidade)
+
+#Verificando se ainda tem outilier
+
+boxplot(dados$Umidade)
+hist(dados$Umidade)
+```
+
+
+
