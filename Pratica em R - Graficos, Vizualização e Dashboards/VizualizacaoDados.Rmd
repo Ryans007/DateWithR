@@ -1,0 +1,33 @@
+
+```{r}
+library(lattice)
+library("RColorBrewer")
+```
+
+
+```{r}
+#Importação dos dados
+
+dados = read.csv("dados.csv", sep = ";", na.strings = "", stringsAsFactors = T)
+head(dados)
+```
+Explorar DadoS
+
+```{r}
+#PIB
+
+boxplot(dados$PIB, main = "PIB", col = brewer.pal(n=3, "Pastel2"), outline = F)
+bwplot(dados$PIB, main = "Dados", xlab = "PIB")
+histogram(dados$PIB, main = "Valores de PIB", col = brewer.pal(n = 3, "Pastel1"))
+```
+```{r}
+boxplot(dados$VALOREMPENHO, main = "Valores Empenhados", xlab = "", col = brewer.pal(n = 3, "Pastel1"), outline = F)
+bwplot(dados$VALOREMPENHO, main = "Valores Empenhados", xlab = "")
+hist(dados$VALOREMPENHO, main = "Dados", xlab = "Valores Empenhados", col = grey.colors(5), density = 20)
+histogram(dados$VALOREMPENHO, main = "Dados", xlab = "Valores Empenhados", col = grey.colors(5))
+
+```
+```{r}
+plot(dados$PIB, dados$VALOREMPENHO, pch = 20)
+```
+
